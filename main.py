@@ -1,27 +1,21 @@
-import openai
 import discord
 from discord.ext import commands
-openai.api_key = "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"
-model = "text-davinci-002"
 
-intents = discord.Intents.default()
-intents.message_content = True
-client = commands.Bot(command_prefix='.', intents=intents)
+bot = commands.Bot(
+  command_prefix='/', #any prefix you want
+  case_insensitive=False,
+  description=None,
+  intents=discord.Intents.all(), #enable intents in discord developer portal
+  help_command=None
+)
+ 
 
-@client.event
-async def on_message(message):
-    if message.author != client.user:
-        if message.content.startswith(".s"):
-            query = message.content[8:]
-            completions = openai.Completion.create(engine=model, prompt=query, max_tokens=1024, n=1,stop=None,temperature=0.5)
-            response = completions.choices[0].text
-            channel = client.get_channel(1059731612922826773)
-            await message.channel.send(response)
-        else:
-            prompt = message.content
-            completions = openai.Completion.create(engine=model, prompt=prompt, max_tokens=1024, n=1,stop=None,temperature=0.5)
-            response = completions.choices[0].text
-            channel = client.get_channel(1059731612922826773)
-            await message.channel.send(response)
+@bot.event
+async def on_ready():
+    print('Bot is ready!')
 
-client.run("NTE3MzM4MjMxMzQ4Mzk2MDMy.GZBqam.kajwZruq-gynIpim1iJ5qy8lipF9SGvmgWbmWk")
+@bot.command()
+async def hello(ctx):
+    await ctx.send('Hello!')
+
+bot.run('NTE3MzM4MjMxMzQ4Mzk2MDMy.GP4F0w.dr74Yd9-FI84dZZPuqbdRLtIDYhjgitUGuQsoY')
